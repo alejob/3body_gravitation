@@ -1,0 +1,116 @@
+\documentclass[12pt]{article}
+%\usepackage{yfonts}
+\usepackage{mathrsfs}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage[left=2.2cm,right=2.2cm,top=3cm,bottom=2.1cm]{geometry}
+\begin{document}
+
+\begin{center}
+\LARGE{\sc{Mec\'anica Anal\'itica}}\\
+\vspace{0.5cm}
+\large{\bf{Extracr\'edito 1}}\\
+\vspace{0.5cm}
+\scriptsize{Universidad de Chile, Facultad de Ciencias,}\\
+\scriptsize{Departamento de F\'isica, Santiago, Chile}\\
+\scriptsize{Jueves 22 de Diciembre, 2011}
+
+\vspace{0.5cm}
+\end{center}
+
+\begin{flushleft}
+\qquad {\bf{\large{Nombre:} }}{\sc{Alejandro Bernardin S.}}
+\end{flushleft}
+
+\section{ Extracr\'edito: Simulaci\'on problema de 3 cuerpos.}
+
+Este documento tiene como finalidad explicar la simulaci\'on del
+problema de 3 cuerpos adjunta,
+tanto en su c\'odigo fuente (adem\'as de los comentarios dentro del
+c\'odigo) como las ecuaciones ocupadas en ella.
+Adem\'as se hace una peque\~na referencia a su utilizaci\'on.
+
+\subsection {Ecuaciones}
+
+Las ecuaciones ocupadas para esta simulaci\'on han sido las ecuaciones
+de gravitaci\'on desarrolladas por Newton, o sea
+
+$$U=\frac{m_im_j}{r_{ij}}$$
+$$F=\frac{m_im_j}{r_{ij}^2}$$
+
+\noindent las cuales al calcularlas para cada part\'icula resultan
+
+$$\Delta U_j=\sum_{i=1}^n\frac{m_im_j}{r_{ij}}$$
+$$\Delta F_j=\sum_{i=1}^n\frac{m_im_j}{r_{ij}^2}$$
+
+\noindent siendo la particula $j$ la afectada tanto por el potencial
+$\Delta U_j$ como
+por la fuerza $\Delta F_j$ en un tiempo determinado $\tau$.\\
+
+Debido a que nuestro sistema posee m\'as de 2 cuerpos, no posee soluci\'on
+anal\'itica, por ende debemos integrar num\'ericamente nuestras
+ecuaciones, para lo cual hemos utilizado el algoritmo \textbf{velocity
+verlet}, el cual dice
+
+$$\vec r_{n+1}=\vec r_n+\tau\vec v_n+\frac12\tau^2\vec a(\vec r_n)$$
+$$\vec v_{n+1}=\vec v_n+\frac{\tau}{2}[\vec a_n(\vec r_n)+\vec a(\vec
+r_{n+1})]$$
+
+\noindent con el cual  hemos obtenido la posici\'on de cada part\'icula en
+nuestro sistema.
+
+\subsection {C\'odigo Fuente}
+
+El programa principal viene dado por el archivo 3cuerpos.cc el cual se
+complementa con las clases Part.cc, Cont.cc, azar.cc y Vect6.cc.
+Analizaremos brevemente cada archivo:
+
+\subsubsection{3cuerpos.cc} Este es el archivo principal, el cual
+contiene el par\'ametro de entrada que representa la cantidad de
+cuerpos del sistema, posee el integrador \textbf{velocity verlet},
+posee las condiciones de borde periodicas, adem\'as
+que es el encargado tanto de leer archivos externos como de escribir
+en ellos.\\
+
+\subsubsection{Cont.cc} Este archivo es el contenedor de las
+part\'iculas, esta encargado de calcular la energ\'ia potencial
+entre ellas as\'i como la fuerza.\\
+
+\subsubsection{Part.cc} Este archivo es el que crea y setea las
+part\'iculas, posee toda la informaci\'on de ellas (posici\'on,
+velocidad y masa).\\
+
+\subsubsection{Vect6.cc} Este archivo crea un vector de 6 dimensiones
+utilizado para cosas muy espec\'ificas dentro del programa.\\
+
+\subsubsection{azar.cc} Este archivo genera n\'umeros al azar.\\
+
+\subsection {Forma de uso} El archivo ejecutable viene dado por el
+archivo binario
+\textbf{3cuerpos}, compilado para procesador de 64 bits. En caso de no
+tener m\'aquina de 64 bits, compilar nuevamente ejecutando el comando
+\textbf{make}. Al ejecutar el programa, este leer\'a autom\'aticamente
+el archivo \textbf{entrada.xyz}, el cual puede ser modificado para ingresar
+distintas condiciones iniciales a nuestra simulaci\'on de 3 cuerpos.\\
+
+En caso de querer ingresar m\'as part\'iculas en el archivo entrada.xyz, solo es necesario cambiar la
+variable $p$ y $archiv$ por la cantidad de part\'iculas deseadas en el archivo
+3cuerpos.cc y compilar nuevamente, ya que el programa est\'a
+capacitado para trabajar con $n$ part\'iculas.\\ 
+
+El archivo de salida es del tipo .xyz, que puede ser visualizado en el
+programa Xmakemol (se recomienda visualizar con una velocidad de 19).
+El archivo entrada.xyz, que viene por defecto, nos muestra dos
+planetas orbitando alrededor de otro 500 veces m\'as grande que ambos.
+Se puede ejecutar autom\'aticamente Xmakemol ejecutando el archivo
+\textbf{visualizar.bash}.
+
+\subsection{Copyleft} El presente programa es de completa autor\'ia
+del autor de este extracr\'edito (exceptuando la clase azar.cc, creado
+por J.Rogan) y puede ser difundido, modificado, analizado y d\'arsele cualquier
+uso que el usuario final estime conveniente. 
+
+
+\end{document}
